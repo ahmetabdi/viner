@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = ">= 1.3.6"
   s.required_ruby_version = '>= 2.0.0'
-  # s.rubyforge_project         = "foodie"
 
   s.add_development_dependency "bundler"
   s.add_development_dependency "rspec"
