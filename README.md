@@ -8,6 +8,8 @@ Vine is currently available for iOS and Android devices. You can download Vine f
 
 An account is needed for all calls to the API.
 
+[https://viner.herokuapp.com/](https://viner.herokuapp.com/)
+
 ## Requirements
 
 Ruby >= 2.0
