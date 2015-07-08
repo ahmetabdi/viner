@@ -1,5 +1,5 @@
 ## Information
-![vine_logo](https://pbs.twimg.com/profile_images/3578238864/50d7e05aa6fe5d477e48a63047e38ce7.png)
+![vine_logo](https://vine.co/static/images/vine_glyph_2x.png)
 ### viner
 
 Wrapper to access the unofficial Vine API.
