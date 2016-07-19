@@ -30,6 +30,11 @@ module Viner
       get('timelines/popular', {}, {})
     end
 
+    def search(username)
+      # GET https://api.vineapp.com/users/search/<username>
+      get("users/search/#{username}", {}, {}).data.records
+    end
+
     # Get Tag
     def tag(tag)
       # GET https://api.vineapp.com/timelines/tags/<tag>
@@ -45,6 +50,12 @@ module Viner
         # GET https://api.vineapp.com/users/me
         get("users/me", {}, {})
       end
+    end
+
+    def timeline(user_id)
+      # GET https://api.vineapp.com/timelines/users/<userid>
+      result = get("timelines/users/#{user_id}", {}, {})
+      return result.data.records if result.success
     end
 
     # Get Single Post

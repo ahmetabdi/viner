@@ -67,6 +67,31 @@ describe Viner::Client do
       response = @client.notifications
       response.success.should be_true
     end
+  end
 
+  describe "When not authenticated" do
+    before(:each) do
+      @client = Viner::Client.new
+    end
+
+    it "should return an array of users given an existing username" do
+      response = @client.search('KingBach')
+      response.size.should be > 0
+    end
+
+    it "should return an empty array given an invalid username" do
+      response = @client.search('lkjpoqiwekasdmnbzmxnbca')
+      response.should be_empty
+    end
+
+    it "should return an array of a user's timeline given a valid user id" do
+      response = @client.timeline('931427884873170944')
+      response.should be_instance_of Array
+    end
+
+    it "should return nil given an invalid user id" do
+      response = @client.timeline('936189236128367346123123')
+      response.should eq nil
+    end
   end
 end
