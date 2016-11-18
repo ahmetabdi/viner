@@ -10,12 +10,12 @@ describe Viner::Client do
 
     it "should login" do
       response = @client.login(VINE_USERNAME, VINE_PASSWORD)
-      response.success.should be_true
+      response.success.should be true
     end
 
     it "should not login" do
       response = @client.login('fake', 'fake')
-      response.success.should be_false
+      response.success.should be false
     end
 
   end
@@ -28,7 +28,7 @@ describe Viner::Client do
     it "should logout" do
       @client.login(VINE_USERNAME, VINE_PASSWORD)
       response = @client.logout
-      response.success.should be_true
+      response.success.should be true
     end
   end
 
@@ -40,32 +40,32 @@ describe Viner::Client do
 
     it "should give popular vines" do
       response = @client.popular
-      response.success.should be_true
+      response.success.should be true
     end
 
     it "should give vines by tag" do
       response = @client.tag("cats")
-      response.success.should be_true
+      response.success.should be true
     end
 
     it "should give back my profile" do
       response = @client.profile
-      response.success.should be_true
+      response.success.should be true
     end
 
     it "should give a users profile" do
       response = @client.profile(912392711326285824)
-      response.success.should be_true
+      response.success.should be true
     end
 
     it "should get a single post" do
-      response = @client.posts(255)
-      response.success.should be_true
+      response = @client.posts(1394724251034185728)
+      response.success.should be true
     end
 
     it "should get your notifications" do
       response = @client.notifications
-      response.success.should be_true
+      response.success.should be true
     end
   end
 
@@ -86,7 +86,7 @@ describe Viner::Client do
 
     it "should return an array of a user's timeline given a valid user id" do
       response = @client.timeline('931427884873170944')
-      response.should be_instance_of Array
+      response.should be_instance_of Hashie::Array
     end
 
     it "should return nil given an invalid user id" do
