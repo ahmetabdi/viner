@@ -1,3 +1,6 @@
+require 'active_support'
+require 'active_support/core_ext'
+
 module Viner
   module Request
 
@@ -5,29 +8,24 @@ module Viner
 
     def call(http_verb, url, opts={})
       result = connection(http_verb, url, opts)
-      Hashie::Mash.new(result.body)
+      Hashie::Mash.new(JSON.parse(result.body))
     end
 
     def connection(http_verb, url, opts={})
       opts.has_key?(:headers) ? nil : opts[:headers] = {}
       opts.has_key?(:parameters) ? nil : opts[:parameters] = nil
-      Unirest.default_header('User-Agent','com.vine.iphone/1.0.3 (unknown, iPhone OS 6.0.1, iPhone, Scale/2.000000)')
-      Unirest.default_header('Accept-Language','en, sv, fr, de, ja, nl, it, es, pt, pt-PT, da, fi, nb, ko, zh-Hans, zh-Hant, ru, pl, tr, uk, ar, hr, cs, el, he, ro, sk, th, id, ms, en-GB, ca, hu, vi, en-us;q=0.8')
-      Unirest.default_header('vine-session-id', @key) if @key
 
-      case http_verb
-      when :get
-        Unirest.get ENDPOINT+url, headers: opts[:headers], parameters: opts[:parameters]
-      when :post
-        Unirest.post ENDPOINT+url, headers: opts[:headers], parameters: opts[:parameters]
-      when :delete
-        Unirest.delete ENDPOINT+url, headers: opts[:headers], parameters: opts[:parameters]
-      when :put
-        Unirest.put ENDPOINT+url, headers: opts[:headers], parameters: opts[:parameters]
-      when :patch
-        Unirest.patch ENDPOINT+url, headers: opts[:headers], parameters: opts[:parameters]
+      uri ||= URI::HTTPS.build host: ENDPOINT, path: url, query: opts[:parameters].to_param
+      http_class = "Net::HTTP::#{http_verb.capitalize}".constantize
+      http_request ||= http_class.new(uri.request_uri).tap do |request|
+        request['User-Agent'] = 'com.vine.iphone/1.0.3 (unknown, iPhone OS 6.0.1, iPhone, Scale/2.000000)'
+        request['Accept-Language'] = 'en, sv, fr, de, ja, nl, it, es, pt, pt-PT, da, fi, nb, ko, zh-Hans, zh-Hant, ru, pl, tr, uk, ar, hr, cs, el, he, ro, sk, th, id, ms, en-GB, ca, hu, vi, en-us;q=0.8'
+        request['vine-session-id'] = @key if @key
+      end
+
+      Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+        http.request http_request
       end
     end
-
   end
 end
